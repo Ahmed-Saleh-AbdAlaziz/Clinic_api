@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام إدارة العيادات v8</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<script>
+  fetch('html/body.html')
+    .then(r => r.text())
+    .then(html => {
+      document.body.insertAdjacentHTML('afterbegin', html);
+      loadModules();
+    });
+
+  function loadModules() {
+    const modules = [
+      'js/modules/config.js',
+      'js/modules/api-client.js',
+      'js/modules/utils.js',
+      'js/modules/locking.js',
+      'js/modules/notifications.js',
+      'js/modules/online-users.js',
+      'js/modules/waiting-screen.js',
+      'js/modules/sync.js',
+      'js/modules/db-cache.js',
+      'js/modules/ledger.js',
+      'js/modules/state-auth.js',
+      'js/modules/permissions-ui.js',
+      'js/modules/branches-ui.js',
+      'js/modules/navigation.js',
+      'js/modules/dashboard.js',
+      'js/modules/reception.js',
+      'js/modules/patient-profile.js',
+      'js/modules/payments.js',
+      'js/modules/packages-ui.js',
+      'js/modules/shifts-ui.js',
+      'js/modules/medical-ui.js',
+      'js/modules/whatsapp.js',
+      'js/modules/quick-booking.js',
+      'js/modules/doctor.js',
+      'js/modules/admin-patients.js',
+      'js/modules/finance.js',
+      'js/modules/settings.js',
+      'js/modules/reports.js',
+      'js/modules/init.js',
+    ];
+    modules.reduce((p, src) => p.then(() => new Promise((res, rej) => {
+      const s = document.createElement('script');
+      s.src = src + '?v=' + Date.now();
+      s.onload = res;
+      s.onerror = () => { console.error('فشل تحميل:', src); rej(src); };
+      document.body.appendChild(s);
+    })), Promise.resolve()).catch(err => console.error('خطأ:', err));
+  }
+</script>
+</body>
+</html>

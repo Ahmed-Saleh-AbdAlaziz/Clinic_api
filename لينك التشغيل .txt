@@ -1,0 +1,21 @@
+http://192.168.1.202/clinic-api/clinic-system-v6.html
+http://192.168.1.202/clinic/
+http://localhost/phpmyadmin/index.php?route=/database/structure&db=clinic_db
+http://localhost/clinic-api/api.php?action=ping&_key=MyClinicKey@9900
+فحص القاعده 
+http://localhost/clinic/api.php?action=ping
+--------------------------------------------------------
+كويس! ده معناه الـ API شغال ✅ — بس الـ ping محتاج الـ API Key.
+
+http://localhost/clinic/api.php?action=ping&_key=12345678901234567890123456789012
+----------------------------------------------------------
+واضح! قاعدة البيانات موجودة ✅ — المشكلة إن مستخدم `clinic_user` مش موجود أو كلمة مروره غلط.
+
+**الحل — افتح phpMyAdmin واضغط SQL وشغّل:**
+
+```sql
+CREATE USER IF NOT EXISTS 'clinic_user'@'localhost' IDENTIFIED BY 'clinic123';
+GRANT ALL PRIVILEGES ON clinic_db.* TO 'clinic_user'@'localhost';
+FLUSH PRIVILEGES;
+اضغط **Go** وقولي إيه اللي ظهر.
+----------------------------------------------------------------

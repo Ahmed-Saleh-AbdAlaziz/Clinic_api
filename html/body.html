@@ -1,0 +1,99 @@
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div id="login-logo-img"></div>
+      <h1>🏥 <span id="login-clinic-name">نظام العيادة</span></h1>
+      <p>نظام متكامل لإدارة المرضى والمواعيد</p>
+    </div>
+    <div class="form-group" style="margin-bottom:.9rem">
+      <label>اسم المستخدم</label>
+      <input type="text" id="login-user" placeholder="أدخل اسم المستخدم">
+    </div>
+    <div class="form-group" style="margin-bottom:.7rem">
+      <label>كلمة المرور</label>
+      <input type="password" id="login-pass" placeholder="أدخل كلمة المرور" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <label style="display:flex;align-items:center;gap:.5rem;margin-bottom:1.2rem;font-size:.85rem;cursor:pointer;color:var(--text-muted)">
+      <input type="checkbox" id="remember-me"> تذكرني
+    </label>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;padding:.7rem" onclick="doLogin()">دخول</button>
+    <div style="margin-top:1rem;padding:.7rem;background:var(--gray-light);border-radius:var(--radius-sm);font-size:.78rem;color:var(--text-muted)">
+      <strong>للتجربة:</strong><br>
+      admin / 1234 — الأدمن<br>
+      doctor1 / 1234 — دكتور<br>
+      secretary1 / 1234 — سكرتاريا
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" class="hidden">
+  <!-- TOPBAR -->
+  <div id="topbar">
+    <div class="topbar-brand">
+      <span id="topbar-logo-img"></span>
+      🏥 <span id="clinic-name-top">عيادة النيل</span>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-time" id="live-time"></div>
+      <button class="chat-btn no-print" onclick="openChat()" title="الرسائل" id="chat-topbtn">💬<span class="chat-badge hidden" id="chat-unread-badge">0</span></button>
+
+      <!-- 🟢 مؤشر الموظفين أونلاين -->
+      <div style="position:relative">
+        <div class="online-pill" onclick="toggleOnlineDropdown()" id="online-pill">
+          <span class="online-dot"></span>
+          <span class="online-count" id="online-count">1</span> أونلاين
+        </div>
+        <div class="online-dropdown" id="online-dropdown">
+          <div style="padding:.4rem .8rem;font-size:.75rem;color:var(--text-muted);font-weight:700;border-bottom:1px solid var(--gray-border)">الموظفون المتصلون الآن</div>
+          <div id="online-list"></div>
+        </div>
+      </div>
+
+      <!-- 🔔 جرس الإشعارات -->
+      <div style="position:relative">
+        <button class="notif-btn" onclick="toggleNotifPanel()" title="الإشعارات" id="notif-btn">
+          🔔<span class="notif-badge" id="notif-badge">0</span>
+        </button>
+        <div class="notif-panel" id="notif-panel">
+          <div class="notif-header">
+            <span>الإشعارات</span>
+            <button onclick="clearAllNotifs()" style="background:none;border:none;color:var(--text-muted);font-size:.78rem;cursor:pointer">مسح الكل</button>
+          </div>
+          <div id="notif-list"><div class="notif-empty">لا توجد إشعارات</div></div>
+        </div>
+      </div>
+      <div class="topbar-user">
+        <span>👤</span>
+        <span id="current-user-name">---</span>
+        <span id="current-role-badge" class="badge badge-success" style="font-size:.7rem"></span>
+      </div>
+      <button class="btn btn-sm" style="background:rgba(255,255,255,.2);color:#fff;border:none;font-size:.78rem" onclick="toggleLang()" id="lang-btn" title="Switch Language">EN</button>
+      <span id="sync-status" title="حالة المزامنة" style="font-size:.7rem;padding:.2rem .5rem;border-radius:20px;background:rgba(255,255,255,.15);color:#fff;cursor:default" onclick="syncToServer(['patients','appointments','ledger','shifts'])">🔗 sync</span>
+      <button class="btn btn-sm" style="background:rgba(255,255,255,.2);color:#fff;border:none" onclick="logout()" id="logout-btn">خروج</button>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div id="sidebar"></div>
+
+  <!-- MAIN -->
+  <div id="main-content"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- شاشة الانتظار للمرضى -->
+<div id="waiting-screen">
+  <div style="font-size:1.2rem;opacity:.6;margin-bottom:2rem" id="waiting-clinic-name">عيادة النيل</div>
+  <div style="font-size:1rem;opacity:.5;margin-bottom:.5rem">يُرجى الانتباه — الدور رقم</div>
+  <div class="waiting-now" id="waiting-num">—</div>
+  <div class="waiting-name" id="waiting-name">—</div>
+  <div class="waiting-queue" id="waiting-queue"></div>
+  <button onclick="closeWaitingScreen()" style="position:fixed;bottom:1rem;left:1rem;background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.4);padding:.4rem .8rem;border-radius:var(--radius-sm);cursor:pointer;font-size:.75rem">✕ إغلاق</button>
+</div>
